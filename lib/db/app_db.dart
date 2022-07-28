@@ -31,8 +31,8 @@ class AppDb extends _$AppDb {
 
   // Get the employee by id
   Future<EmployeeData> getEmployee(int id) async {
-    return await (select(employee)
-      ..where((tbl) => tbl.id.equals(id))).getSingle();
+    return await (select(employee)..where((tbl) => tbl.id.equals(id)))
+        .getSingle();
   }
 
   // update the employee
@@ -47,6 +47,6 @@ class AppDb extends _$AppDb {
 
   // delete the employee
   Future<int> deleteEmployee(int id) async {
-    return await (delete(employee)
-      ..where((tbl) => tbl.id.equals(id))).go();
+    return await (delete(employee)..where((tbl) => tbl.id.equals(id))).go();
   }
+}
