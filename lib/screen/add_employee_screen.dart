@@ -48,9 +48,20 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               labelText: 'Last Name',
             ),
             const SizedBox(height: 8.0),
-            CustomTextFormField(
+            TextFormField(
               controller: _dateOdBirthController,
-              labelText: 'Date of Birth',
+              // keyboardType: TextInputType.name,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Date of Birth',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Date of Birth cannot be empty';
+                }
+                return null;
+              },
+              onTap: () => pickDateBirth(context),
             ),
             const SizedBox(height: 8.0),
           ],
@@ -58,4 +69,33 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       ),
     );
   }
+
+  Future<void> pickDateBirth(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(DateTime.now().year - 100),
+      lastDate: DateTime(DateTime.now().year + 1),
+      builder: (context, child) => Theme(
+          data: ThemeData().copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              onSurface: Colors.black26,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child ?? const Text('Error')),
+    );
+    if (newDate == null) {
+      return;
+    }
+    setState(() {
+      _dateOdBirthController.text = newDate.toString();
+    });
+  }
+
 }
+
+
