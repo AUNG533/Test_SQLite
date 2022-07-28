@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_sql/widgets/custom_text_form_field.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({Key? key}) : super(key: key);
@@ -8,8 +9,11 @@ class AddEmployeeScreen extends StatefulWidget {
 }
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _dateOdBirthController = TextEditingController();
 
-  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,20 +33,26 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextFormField(
-              controller: _controller,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'User Name',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'User name cannot be empty';
-                }
-                return null;
-              },
+            CustomTextFormField(
+              controller: _userNameController,
+              labelText: 'User Name',
             ),
+            const SizedBox(height: 8.0),
+            CustomTextFormField(
+              controller: _firstNameController,
+              labelText: 'First Name',
+            ),
+            const SizedBox(height: 8.0),
+            CustomTextFormField(
+              controller: _lastNameController,
+              labelText: 'Last Name',
+            ),
+            const SizedBox(height: 8.0),
+            CustomTextFormField(
+              controller: _dateOdBirthController,
+              labelText: 'Date of Birth',
+            ),
+            const SizedBox(height: 8.0),
           ],
         ),
       ),
