@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:test_sql/db/app_db.dart';
 import 'package:test_sql/widgets/custom_picker_form_field.dart';
 import 'package:test_sql/widgets/custom_text_form_field.dart';
 import 'package:intl/intl.dart';
+import 'package:drift/drift.dart' as drift;
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({Key? key}) : super(key: key);
@@ -11,11 +13,18 @@ class AddEmployeeScreen extends StatefulWidget {
 }
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
+  late AppDb _db;
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _dateOdBirthController = TextEditingController();
   DateTime? _dateOfBirth;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDb();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +35,29 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // TODO
+              final entity = EmployeeCompanion(
+                userName: drift.Value(_userNameController.text),
+                firstName: drift.Value(_firstNameController.text),
+                lastName: drift.Value(_lastNameController.text),
+                dateOfBirth: drift.Value(_dateOfBirth!),
+              );
+              _db.insertEmployee(entity).then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
+                MaterialBanner(
+                    content:  Text(
+                      'New employee inserted: $value',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () => ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner(),
+                      ),
+                    ],),
+              ));
             },
             icon: const Icon(Icons.save),
           ),
@@ -51,13 +82,13 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               labelText: 'Last Name',
             ),
             const SizedBox(height: 8.0),
-        CustomDatePickerFormField(
-          controller: _dateOdBirthController,
-          labelText: 'Date of Birth',
-          callback: () {
-            pickDateBirth(context);
-          },
-        ),
+            CustomDatePickerFormField(
+              controller: _dateOdBirthController,
+              labelText: 'Date of Birth',
+              callback: () {
+                pickDateBirth(context);
+              },
+            ),
             const SizedBox(height: 8.0),
           ],
         ),
@@ -92,7 +123,4 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       _dateOdBirthController.text = dob;
     });
   }
-
 }
-
-
