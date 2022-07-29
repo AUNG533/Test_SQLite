@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:test_sql/screen/add_employee_screen.dart';
 import 'package:test_sql/screen/home_screen.dart';
 
+import '../screen/edite_employee_screen.dart';
+
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // final args = settings.arguments;
+    final args = settings.arguments;
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/add_employee':
         return MaterialPageRoute(builder: (_) => const AddEmployeeScreen());
+      case '/edit_employee':
+        if (args is int) {
+          return MaterialPageRoute(builder: (_) => EditEmployeeScreen(id: args));
+        }
+        return _errorRoute();
       default:
         return _errorRoute();
     }

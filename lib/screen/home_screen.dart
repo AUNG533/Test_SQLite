@@ -49,43 +49,48 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: employees.length,
               itemBuilder: (context, index) {
                 final EmployeeData employee = employees[index];
-                return Card(
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Colors.black26,
-                      width: 1.2,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24.0),
-                      bottomRight: Radius.circular(24.0),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(employee.id.toString()),
-                        Text(
-                          employee.userName.toString(),
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold,),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/edit_employee', arguments: employee.id);
+                  },
+                   child: Card(
+                      shape: const RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Colors.black26,
+                          width: 1.2,
                         ),
-                        Text(
-                          employee.firstName.toString(),
-                          style: const TextStyle(color: Colors.black),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24.0),
+                          bottomRight: Radius.circular(24.0),
                         ),
-                        Text(
-                          employee.lastName.toString(),
-                          style: const TextStyle(color: Colors.black),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(employee.id.toString()),
+                            Text(
+                              employee.userName.toString(),
+                              style: const TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.bold,),
+                            ),
+                            Text(
+                              employee.firstName.toString(),
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            Text(
+                              employee.lastName.toString(),
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            Text(
+                              employee.dateOfBirth.toString(),
+                              style: const TextStyle(color: Colors.black45),
+                            ),
+                          ],
                         ),
-                        Text(
-                          employee.dateOfBirth.toString(),
-                          style: const TextStyle(color: Colors.black45),
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    )
                 );
               },
             );
