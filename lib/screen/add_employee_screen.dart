@@ -13,6 +13,9 @@ class AddEmployeeScreen extends StatefulWidget {
 }
 
 class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
+
+  final _formKey = GlobalKey<FormState>();
+
   late AppDb _db;
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -52,32 +55,35 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            CustomTextFormField(
-              controller: _userNameController,
-              labelText: 'User Name',
-            ),
-            const SizedBox(height: 8.0),
-            CustomTextFormField(
-              controller: _firstNameController,
-              labelText: 'First Name',
-            ),
-            const SizedBox(height: 8.0),
-            CustomTextFormField(
-              controller: _lastNameController,
-              labelText: 'Last Name',
-            ),
-            const SizedBox(height: 8.0),
-            CustomDatePickerFormField(
-              controller: _dateOdBirthController,
-              labelText: 'Date of Birth',
-              callback: () {
-                pickDateBirth(context);
-              },
-            ),
-            const SizedBox(height: 8.0),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: _userNameController,
+                labelText: 'User Name',
+              ),
+              const SizedBox(height: 8.0),
+              CustomTextFormField(
+                controller: _firstNameController,
+                labelText: 'First Name',
+              ),
+              const SizedBox(height: 8.0),
+              CustomTextFormField(
+                controller: _lastNameController,
+                labelText: 'Last Name',
+              ),
+              const SizedBox(height: 8.0),
+              CustomDatePickerFormField(
+                controller: _dateOdBirthController,
+                labelText: 'Date of Birth',
+                callback: () {
+                  pickDateBirth(context);
+                },
+              ),
+              const SizedBox(height: 8.0),
+            ],
+          ),
         ),
       ),
     );
@@ -112,6 +118,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   }
 
   void addEmployee() {
+    final isValid = _formKey.currentState?.validate();
     final entity = EmployeeCompanion(
       userName: drift.Value(_userNameController.text),
       firstName: drift.Value(_firstNameController.text),
