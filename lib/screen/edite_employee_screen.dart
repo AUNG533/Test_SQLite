@@ -53,6 +53,12 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
             },
             icon: const Icon(Icons.save),
           ),
+          IconButton(
+            onPressed: () {
+              deleteEmployee();
+            },
+            icon: const Icon(Icons.delete),
+          ),
         ],
       ),
       body: Padding(
@@ -153,5 +159,25 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     _firstNameController.text = _employeeData.firstName;
     _lastNameController.text = _employeeData.lastName;
     _dateOdBirthController.text = _employeeData.dateOfBirth.toIso8601String();
+  }
+
+  void deleteEmployee() {
+    _db.deleteEmployee(widget.id).then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.pink,
+              content: Text('Employee Deleted: $value',
+                  style: const TextStyle(color: Colors.white)),
+              actions: [
+                TextButton(
+                  child: const Text('Close', style: TextStyle(color: Colors.white),),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
   }
 }
